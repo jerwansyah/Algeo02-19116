@@ -1,15 +1,16 @@
+const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-better-router');
 const Views = require('koa-views');
 const serve = require('koa-better-serve');
 const body = require('koa-body');
 
+const port = 6969;
+const root = path.resolve(__dirname, 'dist');
+
 const app = new Koa();
 const router = new Router().loadMethods();
-const render = Views(__dirname + '/views/', {
-//  map: {
-//    html: 'nunjucks'
-//  }
+const render = Views(path.resolve(root, 'views'), {
 });
 
 router.get('/', (ctx, next) => {
@@ -40,14 +41,24 @@ router.post('/upload', async (ctx) => {
   }
 });
 
+app.use(async(ctx, next) => {
+  try{
+    await next();
+    const status = ctx.status || 404;
+    if(status == 404) ctx.throw(404);
+  }
+  catch(err){
+    ctx.status = err.status || 500;
+    if(ctx.status == 404) await ctx.render('404');
+  }
+})
+
 app
   .use(render)
   .use(body({ multipart: true }))
   .use(router.middleware())
-  .use(serve(__dirname+'/assets'))
-  .use((ctx, next) => {
-    if(ctx.status == 404){
-      return ctx.redirect('/');
-    }
+  .use(serve(path.resolve(root, 'js'), '/js'))
+  .listen(port, () => {
+    console.log(`Server started at http://localhost:${port}`)
   })
-  .listen(3000);
+;

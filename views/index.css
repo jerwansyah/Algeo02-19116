@@ -1,0 +1,15 @@
+body {
+    margin: 0;
+}
+
+.IndexTitle {
+    display: block;
+    width: auto;
+    background-color: aqua;
+    margin: 2rem;
+    font-size: 2rem;
+}
+
+h1 {
+    color: red;
+}

@@ -4,6 +4,8 @@ const Views = require('koa-views');
 const serve = require('koa-better-serve');
 const body = require('koa-body');
 
+const port = 3000;
+
 const app = new Koa();
 const router = new Router().loadMethods();
 const render = Views(__dirname + '/views/', {
@@ -50,4 +52,4 @@ app
       return ctx.redirect('/');
     }
   })
-  .listen(3000);
+  .listen(port, () => console.log('Dah jalan, Bro.. di http://localhost:'+port));

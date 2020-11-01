@@ -35,7 +35,8 @@ router.post('/upload', async (ctx) => {
       // TODO: File upload logic
       console.log(file.name);
     });
-    ctx.body = { status: 0, mesage: 'Success' };
+    ctx.body = { status: 0, message: 'Success' };
+    ctx.redirect('/');
   }
   else{
     ctx.body = { status: 1, message: 'Mulai...' };
@@ -43,13 +44,34 @@ router.post('/upload', async (ctx) => {
 });
 
 app
-  .use(render)
-  .use(body({ multipart: true }))
-  .use(router.middleware())
-  .use(serve(__dirname+'/assets'))
-  .use((ctx, next) => {
-    if(ctx.status == 404){
-      return ctx.redirect('/');
-    }
-  })
-  .listen(port, () => console.log('Dah jalan, Bro.. di http://localhost:'+port));
+    .use(render)
+    .use(body({
+            formidable: {uploadDir:'./uploads'},
+            multipart: true,
+            urlencoded: true
+        }))
+    .use(router.middleware())
+    .use(serve(__dirname+'/assets'))
+    .use((ctx, next) => {
+        if(ctx.status == 404){
+            return ctx.redirect('/');
+        }
+    })
+    .listen(port, () => console.log('Dah jalan, Bro.. di http://localhost:'+port));
+
+
+/* ******** Percobaan Axel ********* */
+// var Nyoba = require('./AxelFunc/fileToArray');
+// const fs = require('fs');
+// fs.readdir('./uploads', (err, files) => {
+//     files.forEach(file => {
+//         console.log(file);
+//         console.log(fs.readFileSync('./uploads/'+file, 'utf8'));
+
+//         fs.readFileSync('./uploads/'+file, 'utf8', function(err, data) {
+//             var element = document.getElementById('file-content');
+//             element.textContent = contents;
+//         });
+        
+//     })
+// })

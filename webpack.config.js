@@ -9,7 +9,6 @@ const dev = true;
 const root = path.resolve(__dirname, './dist');
 
 module.exports = {
-  watch: dev,
   watchOptions: {
     ignored: /node_modules/
   },
@@ -48,7 +47,7 @@ module.exports = {
       }
     ]
   },
-  devtool: 'inline-source-map',
+  devtool: dev ? 'inline-source-map' : '',
   plugins: [
     new CleanWebpackPlugin({
       cleanStaleWebpackAssets: !dev

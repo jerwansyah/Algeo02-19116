@@ -4,7 +4,7 @@
   "description": "mesin pencari kata",
   "main": "server.js",
   "scripts": {
-    "dev": "npm run compile & npm run start",
+    "dev": "webpack --watch --progress & npm run start",
     "start": "node server.js",
     "compile": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"

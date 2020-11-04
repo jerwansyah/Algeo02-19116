@@ -5,6 +5,8 @@ const Views = require('koa-views');
 const serve = require('koa-better-serve');
 const body = require('koa-body');
 
+const { CurrentDatabase as db } = require('./lib/vectorText');
+
 const port = 6969;
 const root = path.resolve(__dirname, 'dist');
 
@@ -65,17 +67,17 @@ app
 ;
 
 /* ******** Percobaan Axel ********* */
-// var Nyoba = require('./AxelFunc/fileToArray');
-// const fs = require('fs');
-// fs.readdir('./uploads', (err, files) => {
-//     files.forEach(file => {
-//         console.log(file);
-//         console.log(fs.readFileSync('./uploads/'+file, 'utf8'));
+var Nyoba = require('./AxelFunc/fileToArray');
+const fs = require('fs');
+fs.readdir('./uploads', (err, files) => {
+    files.forEach(file => {
+        console.log(file);
+        console.log(fs.readFileSync('./uploads/'+file, 'utf8'));
 
-//         fs.readFileSync('./uploads/'+file, 'utf8', function(err, data) {
-//             var element = document.getElementById('file-content');
-//             element.textContent = contents;
-//         });
-        
-//     })
-// })
+        fs.readFileSync('./uploads/'+file, 'utf8', function(err, data) {
+            var element = document.getElementById('file-content');
+            element.textContent = contents;
+        });
+     
+    })
+})

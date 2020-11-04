@@ -79,4 +79,5 @@ class Database {
 
 const CurrentDatabase = new Database();
 
-module.exports = { CurrentDatabase };
+module.exports = { CurrentDatabase, Vector };
+module.exports.default = CurrentDatabase;

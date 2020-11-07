@@ -14,8 +14,8 @@ module.exports = {
     ignored: /node_modules/
   },
   entry: {
-    'index': path.resolve('./src/js/index.js'),
-    '404': path.resolve('./src/js/404.js')
+    'index': path.resolve(__dirname, 'src', 'js', 'index.js'),
+    '404': path.resolve(__dirname, 'src', 'js', '404.js')
   },
   output: {
     path: root,
@@ -25,9 +25,9 @@ module.exports = {
   resolve: {
     alias: {
       vue: 'vue/dist/vue.js',
-      '@v': path.resolve(__dirname, '/src/views'),
-      '@s': path.resolve(__dirname, '/src/styles'),
-      '@c': path.resolve(__dirname, '/src/components'),
+      '@v': path.resolve(__dirname, 'src', 'views'),
+      '@s': path.resolve(__dirname, 'src', 'styles'),
+      '@c': path.resolve(__dirname, 'src', 'components'),
     }
   },
   module: {
@@ -57,12 +57,12 @@ module.exports = {
     }),
     new VueLoader(),
     new HtmlWebpackPlugin({
-      template: path.resolve('./src/views/index.html'),
+      template: path.resolve('src/views/index.html'),
       filename: 'views/index.html',
       chunks: ['index'],
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve('./src/views/404.html'),
+      template: path.resolve('src/views/404.html'),
       filename: 'views/404.html',
       chunks: ['404'],
     }),
@@ -71,7 +71,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/assets', to: 'assets' }
+        { from: 'src/assets', to: 'assets' }
       ],
     }),
   ]

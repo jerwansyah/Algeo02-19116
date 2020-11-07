@@ -20,7 +20,7 @@ module.exports = {
   output: {
     path: root,
     publicPath: '/',
-    filename: 'js/[name].[contenthash].bundle.js'
+    filename: 'js/[name].bundle.js'
   },
   resolve: {
     alias: {

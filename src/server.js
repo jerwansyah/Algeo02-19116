@@ -2,13 +2,14 @@ const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-better-router');
 const Views = require('koa-views');
-const serve = require('koa-better-serve');
+const mount = require('koa-mount');
+const serve = require('koa-static');
 const body = require('koa-body');
-
-const { CurrentDatabase: db } = require('./lib/vectorText');
 
 const port = 6969;
 const root = path.resolve(__dirname, 'dist');
+
+const { CurrentDatabase: db } = require('./lib/vectorText');
 
 const app = new Koa();
 const router = new Router().loadMethods();
@@ -18,7 +19,7 @@ const render = Views(path.resolve(root, 'views'), {
 router.get('/', (ctx, next) => {
   // TODO: make homepage
   return ctx.render('index');
-})
+});
 
 router.post('/search', (ctx, next) => {
   let query = ctx.request.body;
@@ -59,25 +60,10 @@ app.use(async(ctx, next) => {
 app
   .use(render)
   .use(body({ multipart: true }))
+  .use(mount('/css', serve(path.resolve(root, 'css'))))
+  .use(mount('/js', serve(path.resolve(root, 'js'))))
   .use(router.middleware())
-  .use(serve(path.resolve(root, 'js'), '/js'))
   .listen(port, () => {
     console.log(`Server started at http://localhost:${port}`)
   })
 ;
-
-/* ******** Percobaan Axel ********* */
-var Nyoba = require('./UploadFile/fileToArray');
-const fs = require('fs');
-fs.readdir('./uploads', (err, files) => {
-    files.forEach(file => {
-        console.log(file);
-        console.log(fs.readFileSync('./uploads/'+file, 'utf8'));
-
-        fs.readFileSync('./uploads/'+file, 'utf8', function(err, data) {
-            var element = document.getElementById('file-content');
-            element.textContent = contents;
-        });
-     
-    })
-})

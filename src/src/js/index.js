@@ -1,5 +1,7 @@
 const Vue = require('vue');
-const App = require('./components/main.vue').default;
+const App = require('@c/main.vue').default;
+
+import '@s/index.scss';
 
 new Vue({
   render: h => h(App),

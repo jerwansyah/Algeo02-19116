@@ -4,14 +4,6 @@
   </div>
 </template>
 
-<style lang="sass">
-$fg: green;
-$bg: lime;
-h1{
-  color: $fg;
-  background: $bg;
-}
-</style>
 <script>
 export default {
   data() {

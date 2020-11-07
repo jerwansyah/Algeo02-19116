@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const VueLoader = require('vue-loader/lib/plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const dev = true;
 const root = path.resolve(__dirname, './dist');
@@ -12,18 +13,21 @@ module.exports = {
   watchOptions: {
     ignored: /node_modules/
   },
-  entry: [
-    './src/index.js'
-  ],
+  entry: {
+    'index': path.resolve('./src/js/index.js'),
+    '404': path.resolve('./src/js/404.js')
+  },
   output: {
     path: root,
     publicPath: '/',
-    filename: 'js/[name].bundle.js'
+    filename: 'js/[name].[contenthash].bundle.js'
   },
   resolve: {
     alias: {
       vue: 'vue/dist/vue.js',
-      views: path.resolve(__dirname, '/src/views')
+      '@v': path.resolve(__dirname, '/src/views'),
+      '@s': path.resolve(__dirname, '/src/styles'),
+      '@c': path.resolve(__dirname, '/src/components'),
     }
   },
   module: {
@@ -31,8 +35,7 @@ module.exports = {
       {
         test: /\.s[ac]ss$/,
         use: [
-          'vue-style-loader',
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
         ],
@@ -54,12 +57,20 @@ module.exports = {
     }),
     new VueLoader(),
     new HtmlWebpackPlugin({
-      template: './src/index.html',
-      filename: 'views/index.html'
+      template: path.resolve('./src/views/index.html'),
+      filename: 'views/index.html',
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve('./src/views/404.html'),
+      filename: 'views/404.html',
+      chunks: ['404'],
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'css/[name].css'
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/views', to: 'views' },
         { from: './src/assets', to: 'assets' }
       ],
     }),

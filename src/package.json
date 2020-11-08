@@ -4,9 +4,10 @@
   "description": "mesin pencari kata",
   "main": "server.js",
   "scripts": {
-    "dev": "npm-run-all --parallel start compile",
+    "dev": "npm-run-all --parallel start compile:watch",
     "start": "node server.js",
     "compile": "webpack",
+    "compile:watch": "webpack --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const Koa = require('koa');
 const Router = require('koa-better-router');
@@ -31,14 +32,25 @@ router.post('/search', (ctx, next) => {
 
 router.post('/upload', async (ctx) => {
   let files = ctx.request.files;
+  fs.mkdirSync(path.resolve(root, 'docs'));
   if(files){
     files = files['docs[]'];
+    if(!Array.isArray(files)) files = [files];
     files.forEach((file) => {
-      // TODO: File upload logic
-      console.log(file.name);
+      fs.readFile(file.path, (err, data) => {
+        if(err) throw err;
+
+        fs.writeFile(path.resolve(root, 'docs', file.name), data, err => {
+          if(err) throw err;
+        });
+        fs.unlink(file.path, err => {
+          if(err) throw err;
+        });
+      });
+      // TODO: Stemming, sastrawi.js?
+      // TODO: Save "vectorized" document? Or just stemmed document?
     });
     ctx.body = { status: 0, message: 'Success' };
-    ctx.redirect('/');
   }
   else{
     ctx.body = { status: 1, message: 'Mulai...' };
@@ -62,6 +74,7 @@ app
   .use(body({ multipart: true }))
   .use(mount('/css', serve(path.resolve(root, 'css'))))
   .use(mount('/js', serve(path.resolve(root, 'js'))))
+  .use(mount('/docs', serve(path.resolve(root, 'docs'))))
   .use(router.middleware())
   .listen(port, () => {
     console.log(`Server started at http://localhost:${port}`)

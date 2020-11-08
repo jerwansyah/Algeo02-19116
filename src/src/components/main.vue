@@ -17,6 +17,7 @@
       <input type=submit value='Search!'>
     </form>
     <div v-if='success'>
+      <h2>Success</h2>
     </div>
   </div>
 </template>
@@ -35,9 +36,23 @@ export default {
     }
   },
   methods: {
-    uploadFiles: (e) => {
+    uploadFiles(e){
       e.preventDefault();
-      this.success = true;
+      const formData = new FormData();
+      this.files.forEach( file => {
+        formData.append('docs', file);
+      });
+      fetch('/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.status == 0) this.success = true;
+      })
+      .catch(err => {
+        console.log(err);
+      })
     },
     filesChanged(e){
       this.files = Array.from(e.target.files);

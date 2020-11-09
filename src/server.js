@@ -17,6 +17,8 @@ const router = new Router().loadMethods();
 const render = Views(path.resolve(root, 'views'), {
 });
 
+const docPath = path.resolve(root, 'docs');
+
 router.get('/', (ctx, next) => {
   // TODO: make homepage
   return ctx.render('index');
@@ -32,21 +34,15 @@ router.post('/search', (ctx, next) => {
 
 router.post('/upload', async (ctx) => {
   let files = ctx.request.files;
-  fs.mkdirSync(path.resolve(root, 'docs'));
   if(files){
-    files = files['docs[]'];
-    if(!Array.isArray(files)) files = [files];
+    if(!files['docs[]']) files = [files['docs']];
+    else files = files['docs[]'];
     files.forEach((file) => {
-      fs.readFile(file.path, (err, data) => {
-        if(err) throw err;
-
-        fs.writeFile(path.resolve(root, 'docs', file.name), data, err => {
-          if(err) throw err;
-        });
-        fs.unlink(file.path, err => {
-          if(err) throw err;
-        });
-      });
+      fs.rename(
+        file.path,
+        path.resolve(docPath, file.name),
+        e => { console.log(e); }
+      );
       // TODO: Stemming, sastrawi.js?
       // TODO: Save "vectorized" document? Or just stemmed document?
     });
@@ -69,9 +65,17 @@ app.use(async(ctx, next) => {
   }
 })
 
+if(!fs.existsSync(docPath)){
+  fs.mkdirSync(docPath);
+}
 app
   .use(render)
-  .use(body({ multipart: true }))
+  .use(body({
+    multipart: true,
+    formidable: {
+      uploadDir: path.resolve(root, 'docs')
+    }
+  }))
   .use(mount('/css', serve(path.resolve(root, 'css'))))
   .use(mount('/js', serve(path.resolve(root, 'js'))))
   .use(mount('/docs', serve(path.resolve(root, 'docs'))))

@@ -9,6 +9,7 @@ const body = require('koa-body');
 
 const port = 6969;
 const root = path.resolve(__dirname, 'dist');
+const docsPath = path.resolve(__dirname, 'upload', 'docs');
 
 const { CurrentDatabase: db } = require('./lib/vectorText');
 
@@ -16,8 +17,6 @@ const app = new Koa();
 const router = new Router().loadMethods();
 const render = Views(path.resolve(root, 'views'), {
 });
-
-const docPath = path.resolve(root, 'docs');
 
 router.get('/', (ctx, next) => {
   // TODO: make homepage
@@ -40,7 +39,7 @@ router.post('/upload', async (ctx) => {
     files.forEach((file) => {
       fs.rename(
         file.path,
-        path.resolve(docPath, file.name),
+        path.resolve(docsPath, file.name),
         e => { console.log(e); }
       );
       // TODO: Stemming, sastrawi.js?
@@ -65,20 +64,19 @@ app.use(async(ctx, next) => {
   }
 })
 
-if(!fs.existsSync(docPath)){
-  fs.mkdirSync(docPath);
-}
+
+if(!fs.existsSync(docsPath)) fs.mkdirSync(docsPath, { recursive: true });
 app
   .use(render)
   .use(body({
     multipart: true,
     formidable: {
-      uploadDir: path.resolve(root, 'docs')
+      uploadDir: path.resolve(__dirname, 'upload', 'docs')
     }
   }))
   .use(mount('/css', serve(path.resolve(root, 'css'))))
   .use(mount('/js', serve(path.resolve(root, 'js'))))
-  .use(mount('/docs', serve(path.resolve(root, 'docs'))))
+  .use(mount('/docs', serve(docsPath)))
   .use(router.middleware())
   .listen(port, () => {
     console.log(`Server started at http://localhost:${port}`)

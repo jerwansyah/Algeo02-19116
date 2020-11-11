@@ -1,7 +1,13 @@
 body {
     margin: 0;
+    text-align: center;
 }
 
+#app{
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
 .IndexTitle {
     display: block;
     width: auto;

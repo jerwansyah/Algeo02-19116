@@ -12,7 +12,7 @@
           </li>
         </ol>
       </div>
-      <input type=file @change='filesChanged' multiple>
+      <Uploader @addfile='addFile'/>
       <input type=text v-bind='searchQuery'>
       <input type=submit value='Search!'>
     </form>
@@ -26,6 +26,7 @@
 </style>
 
 <script>
+import Uploader from './uploader.vue';
 export default {
   data() {
     return {
@@ -54,13 +55,17 @@ export default {
         console.log(err);
       })
     },
-    filesChanged(e){
-      this.files = Array.from(e.target.files);
-      console.log(this.files);
+    addFile(files){
+      this.files.push(...files.filter(
+        file => !this.files.find(
+          f => f.name == file.name)));
     },
     deleteFile(n){
       this.files = this.files.filter((e) => e.name != n);
     }
+  },
+  components: {
+    Uploader
   }
 }
 </script>

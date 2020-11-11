@@ -24,11 +24,33 @@ router.get('/', (ctx, next) => {
 });
 
 router.post('/search', (ctx, next) => {
-  let query = ctx.request.body;
+  const query = ctx.request.body;
+  let qvec = db.vectorizeText(query.query);
+  console.log(db);
+  console.log(qvec);
   // TODO: similarity logic
-  console.log(query);
   ctx.response.type = 'json';
-  ctx.body = { status: 0, message: 'Success', data: [] };
+  ctx.body = { status: 0, message: 'Success', data: {
+    documents: [
+      {
+        title: 'Test',
+        wordCount: 10,
+        similarity: 10,
+        excerpt: 'Lorem Ipsum'
+      }
+    ],
+    terms: [
+      {
+        term: 'anjay',
+        docs: [
+          {
+            name: 'Test',
+            count: 10
+          }
+        ]
+      }
+    ],
+  } };
 });
 
 router.post('/upload', async (ctx) => {

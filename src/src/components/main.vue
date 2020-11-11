@@ -1,7 +1,7 @@
 <template>
   <div id='app'>
     <h1>Hallo!</h1>
-    <form @submit='uploadFiles'>
+    <form @submit.prevent>
       <div v-if="files.length > 0">
         <h3>File yang diupload:</h3>
         <ol id='file-list'>
@@ -13,11 +13,39 @@
         </ol>
       </div>
       <Uploader @addfile='addFile'/>
-      <input type=text v-bind='searchQuery'>
-      <input type=submit value='Search!'>
+      <input type=button value='Upload!' @click='uploadFiles'>
+      <input type=text v-model='searchQuery'>
+      <input type=submit value='Search!' @click='search'>
     </form>
-    <div v-if='success'>
-      <h2>Success</h2>
+    <div v-if='uploadSuccess'>
+      <h2>Upload Success</h2>
+    </div>
+    <div v-if='querySuccess'>
+      <h2>Query Result</h2>
+      <ol>
+        <li v-for='doc of queryResult.documents' :key='doc.name'>
+          <h3><a :href='doc.link'>{{ doc.title }}</a></h3>
+          <span>Jumlah Kata: {{ doc.wordCount }}</span>
+          <span>Kemiripan: {{ doc.similarity }}</span>
+          <p>{{ doc.excerpt }}</p>
+        </li>
+      </ol>
+      <table>
+        <thead>
+          <th>Term</th>
+          <th v-for='doc in queryResult.terms[0].docs' :key='doc.name'>
+            {{ doc.name }}
+          </th>
+        </thead>
+        <tbody>
+          <tr v-for='term in queryResult.terms' :key='term.term'>
+            <td>{{ term.term }}</td>
+            <td v-for='doc in term.docs' :key='doc.name'>
+              {{ doc.count }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </template>
@@ -33,7 +61,9 @@ export default {
       files: [],
       searchQuery: '',
       result: {},
-      success: false,
+      uploadSuccess: false,
+      querySuccess: false,
+      queryResult: {},
     }
   },
   methods: {
@@ -54,6 +84,24 @@ export default {
       .catch(err => {
         console.log(err);
       })
+    },
+    search(e){
+      e.preventDefault();
+      fetch('/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          query: this.searchQuery,
+          files: this.files.map(file => file.name)
+        }),
+      })
+      .then(res => res.json())
+      .then(res => {
+        if(res.status == 0) this.querySuccess = true;
+        this.queryResult = res.data;
+      });
     },
     addFile(files){
       this.files.push(...files.filter(

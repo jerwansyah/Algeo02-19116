@@ -9,6 +9,26 @@ class Vector {
   getComponent(i){ return this.vals[i] || 0; }
   setComponent(i, val){ this.vals[i] = val; }
 
+  /* normalizing term frequency */
+  /*
+  normalize(){ 
+    this.vals.forEach((i) => {
+      let len = this.vals.length;
+      let val = 0;
+      if(this.getComponent(i) != 0)
+        val = (this.getComponent(i) / len).toFixed(10);
+      this.setComponent(i, val);
+    })
+    //console.log(this.vals.length);
+  }
+  */
+  
+  /* Inverse Document Frequency */
+  /*
+  tfidf(){
+
+  }*/
+
   /* Getter panjang vektor */
   get length(){
     const l = this.vals.reduce((ax, cx) => ax + Math.pow(cx, 2), 0);
@@ -31,6 +51,7 @@ class Vector {
 
 /* Bagian database dan mengubah teks ke vektor */
 class Database {
+  // TODO: Clear database of previous query (or the whole db? after deleting file(s))
   constructor(documents){
     this.database = [];
   }
@@ -54,7 +75,7 @@ class Database {
   /* menambahkan kata ke database */
   addToDatabase(word){
     let index = -1;
-    if(!this.wordExists(word)){
+    if(!this.wordExists(word)) { // && word.length != 0){
       index = this.termCount;
       this.database.push(word);
     }
@@ -65,23 +86,26 @@ class Database {
    * text bisa dalam bentuk string atau array of strings (kata-per-kata))
    * Mengembalikan vektor. */
   vectorizeText(text){
-    if(!Array.isArray(text)) text = text.split(' ');
+    if(!Array.isArray(text)) text = text.toLowerCase().split(' ');
     let v = new Vector();
     text.forEach( word => {
       // deleting marks
-      if (word.includes(',')) {
-        word = word.replace(',', '');
-      }
+      word = word.replace(/[^0-9a-z]/g, '');
 
-      if (word.includes('.')) {
-        word = word.replace('.', '');
-      }
-      
       let i = this.searchWord(word);
-      if(i === -1)
-        i = this.addToDatabase(word);
+      //let val = 0;
+      if(i === -1){
+        if (word.length != 0){
+          i = this.addToDatabase(word);
+        }
+      }
       v.setComponent(i, v.getComponent(i)+1);
+      for(let j = 0; j < i; j++) {
+        if(v.getComponent(j) < 1)
+          v.setComponent(j, 0);
+      }
     } );
+    //v.normalize(); //here? tapi belom print term freq
     return v;
   }
 }

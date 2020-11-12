@@ -64,6 +64,34 @@ router.post('/upload', async (ctx) => {
         path.resolve(docsPath, file.name),
         e => { console.log(e); }
       );
+
+      // Read file and store the words to database
+      fs.readFile(path.resolve(docsPath, file.name), (err, data) => {
+        if (err) throw err;
+
+        // split text into lines
+        text = data.toString().split('\n');
+
+        text.forEach(function(line){
+          // save the line into db
+          wordbank = db.vectorizeText(line);
+        })
+
+        for (i = 0; i < db.database.length; i++) {
+          console.log(db.getWordAt(i));
+        }
+
+        // var words = line.split(' ');
+        // words.forEach(function(word){
+        //   if (word.includes(',') || word.includes('.')) {
+        //     word.replace(/['"]+/g, '')
+        //   }
+        //   wordbank = db.vectorizeText(word);
+        // })
+
+        console.log(wordbank);
+      })
+
       // TODO: Stemming, sastrawi.js?
       // TODO: Save "vectorized" document? Or just stemmed document?
     });

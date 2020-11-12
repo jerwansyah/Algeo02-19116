@@ -68,6 +68,15 @@ class Database {
     if(!Array.isArray(text)) text = text.split(' ');
     let v = new Vector();
     text.forEach( word => {
+      // deleting marks
+      if (word.includes(',')) {
+        word = word.replace(',', '');
+      }
+
+      if (word.includes('.')) {
+        word = word.replace('.', '');
+      }
+      
       let i = this.searchWord(word);
       if(i === -1)
         i = this.addToDatabase(word);

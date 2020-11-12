@@ -86,7 +86,6 @@ class Database {
    * text bisa dalam bentuk string atau array of strings (kata-per-kata))
    * Mengembalikan vektor. */
   vectorizeText(text){
-    // TODO: kasus string kosong, vectornya masih -1 indeksnya
     if(!Array.isArray(text)) text = text.toLowerCase().split(' ');
     let v = new Vector();
     text.forEach( word => {
@@ -94,12 +93,13 @@ class Database {
       word = word.replace(/[^0-9a-z]/g, '');
 
       let i = this.searchWord(word);
+      //let val = 0;
       if(i === -1){
         if (word.length != 0){
           i = this.addToDatabase(word);
-          v.setComponent(i, v.getComponent(i)+1);
         }
       }
+      v.setComponent(i, v.getComponent(i)+1);
       for(let j = 0; j < i; j++) {
         if(v.getComponent(j) < 1)
           v.setComponent(j, 0);

@@ -86,8 +86,8 @@ app.use(async(ctx, next) => {
   }
 })
 
-
 if(!fs.existsSync(docsPath)) fs.mkdirSync(docsPath, { recursive: true });
+
 app
   .use(render)
   .use(body({

@@ -11,7 +11,9 @@ const port = 6969;
 const root = path.resolve(__dirname, 'dist');
 const docsPath = path.resolve(__dirname, 'upload', 'docs');
 
-const { CurrentDatabase: db } = require('./lib/vectorText');
+const { CurrentDatabase: db, Vector } = require('./lib/vectorText');
+
+var vectorDB = new Vector();
 
 const app = new Koa();
 const router = new Router().loadMethods();
@@ -86,22 +88,13 @@ router.post('/upload', async (ctx) => {
 
         text.forEach(function(line){
           // save the line into db
-          wordbank = db.vectorizeText(line);
+          vectorDB = db.vectorizeText(vectorDB, line);
         })
 
         for (i = 0; i < db.database.length; i++) {
           console.log(db.getWordAt(i));
+          console.log(vectorDB.getComponent(i));
         }
-
-        // var words = line.split(' ');
-        // words.forEach(function(word){
-        //   if (word.includes(',') || word.includes('.')) {
-        //     word.replace(/['"]+/g, '')
-        //   }
-        //   wordbank = db.vectorizeText(word);
-        // })
-
-        console.log(wordbank);
       })
 
       // TODO: Stemming, sastrawi.js?

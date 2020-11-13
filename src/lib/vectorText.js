@@ -6,7 +6,8 @@ class Vector {
   }
 
   /* Getter dan setter untuk komponen ke-i vektor */
-  getComponent(i){ return this.vals[i] || 0; }
+  getComponent(i){ return this.vals[i]; }
+  setNewComponent() { this.vals.push(1) }
   setComponent(i, val){ this.vals[i] = val; }
 
   /* normalizing term frequency */
@@ -74,36 +75,36 @@ class Database {
   }
   /* menambahkan kata ke database */
   addToDatabase(word){
-    let index = -1;
-    if(!this.wordExists(word)) { // && word.length != 0){
-      index = this.termCount;
-      this.database.push(word);
-    }
+    this.database.push(word);
+
+    let index = this.termCount;
+
     return index;
   }
 
   /* Membuat teks menjadi vektor di ruang database
    * text bisa dalam bentuk string atau array of strings (kata-per-kata))
    * Mengembalikan vektor. */
-  vectorizeText(text){
+  vectorizeText(v, text){
     // TODO: kasus string kosong, vectornya masih -1 indeksnya
     if(!Array.isArray(text)) text = text.toLowerCase().split(' ');
-    let v = new Vector();
+    
     text.forEach( word => {
       // deleting marks
       word = word.replace(/[^0-9a-z]/g, '');
 
       let i = this.searchWord(word);
+      // word is not exist
       if(i === -1 && word.length != 0){
         i = this.addToDatabase(word);
+        v.setNewComponent();
+      // word is exist
+      } else {
+        if (word.length != 0){
+          v.setComponent(i, v.getComponent(i)+1);
+        }
       }
-      if (word.length != 0){
-        v.setComponent(i, v.getComponent(i)+1);
-      }
-      for(let j = 0; j < i; j++) {
-        if(v.getComponent(j) < 1)
-          v.setComponent(j, 0);
-      }
+  
     } );
     //v.normalize(); //here? tapi belom print term freq
     return v;

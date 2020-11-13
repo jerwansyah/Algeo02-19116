@@ -27,32 +27,58 @@ router.get('/', (ctx, next) => {
 
 router.post('/search', (ctx, next) => {
   const query = ctx.request.body;
-  let qvec = db.vectorizeText(query.query);
-  console.log(db);
-  console.log(qvec);
-  // TODO: similarity logic
-  ctx.response.type = 'json';
-  ctx.body = { status: 0, message: 'Success', data: {
-    documents: [
-      {
-        title: 'Test',
-        wordCount: 10,
-        similarity: 10,
-        excerpt: 'Lorem Ipsum'
+  if(query.query === '')
+    ctx.body = { status: 1, message: 'Query cannot be empty' };
+  else{
+    let qvec = db.vectorizeText(query.query);
+    let ret = {
+      documents: [],
+      terms: []
+    };
+    let docsVec = [];
+    query.files.forEach(name => {
+      let s = '';
+      try{
+        s = fs.readFileSync(path.resolve(docsPath, name)).toString();
       }
-    ],
-    terms: [
-      {
-        term: 'anjay',
-        docs: [
-          {
-            name: 'Test',
-            count: 10
-          }
-        ]
+      catch(e){
+        console.log(e);
+        return;
       }
-    ],
-  } };
+      const excerpt = s.split(/[\.\n]/)[0];
+      let vec = db.vectorizeText(s);
+      let curr = {
+        title: name,
+        similarity: 0,
+        wordCount:0,
+        excerpt: excerpt,
+        link: '/docs/'+name
+      };
+      curr.wordCount = vec.vals.reduce((ax, cx) => ax + cx);
+      curr.similarity = vec.cosineSimilarity(qvec);
+      docsVec.push({name: name, vec: vec});
+      ret.documents.push(curr);
+    });
+    qvec.vals.forEach((e, i) => {
+      const curr = {
+        term: db.getWordAt(i),
+        docs: [{
+          name: 'query',
+          count: e
+        }]
+      };
+      docsVec.forEach(d => {
+        curr.docs.push({
+          name: d.name,
+          count: d.vec.getComponent(i)
+        });
+      });
+      ret.terms.push(curr);
+    });
+    ret.documents.sort((a, b) => b.similarity - a.similarity);
+    ctx.response.type = 'json';
+    ctx.body = { status: 0, message: 'Success', data: ret };
+  }
 });
 
 router.post('/upload', async (ctx) => {
@@ -63,7 +89,9 @@ router.post('/upload', async (ctx) => {
   // }
 
   if(files){
-    files = [files['docs']];
+    console.log(files);
+    if(!files['docs[]']) files = [files['docs']];
+    else files = [...files['docs[]']];
 
     // if multiple then it is [[File]]
     // need to be changed to [File]
@@ -78,27 +106,6 @@ router.post('/upload', async (ctx) => {
         path.resolve(docsPath, file.name),
         e => { console.log(e); }
       );
-
-      // Read file and store the words to database
-      fs.readFile(path.resolve(docsPath, file.name), (err, data) => {
-        if (err) throw err;
-
-        // split text into lines
-        text = data.toString().split('\n');
-
-        text.forEach(function(line){
-          // save the line into db
-          vectorDB = db.vectorizeText(vectorDB, line);
-        })
-
-        for (i = 0; i < db.database.length; i++) {
-          console.log(db.getWordAt(i));
-          console.log(vectorDB.getComponent(i));
-        }
-      })
-
-      // TODO: Stemming, sastrawi.js?
-      // TODO: Save "vectorized" document? Or just stemmed document?
     });
     ctx.body = { status: 0, message: 'Success' };
   }
@@ -126,7 +133,7 @@ app
   .use(body({
     multipart: true,
     formidable: {
-      uploadDir: path.resolve(__dirname, 'upload', 'docs')
+      uploadDir: path.resolve(__dirname, 'upload', 'docs'),
     }
   }))
   .use(mount('/css', serve(path.resolve(root, 'css'))))

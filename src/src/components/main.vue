@@ -1,8 +1,15 @@
 <template>
   <div id='app'>
-    <h1>Hallo!</h1>
+    <div>
+      <h1>Welcome to</h1>
+      <div class='bonk'>
+        <button class='b_bonk'>BONK</button>
+      </div>
+    </div>
     <form @submit.prevent>
       <div v-if="files.length > 0">
+        <div class='spacer'>
+        </div>
         <h3>File yang diupload:</h3>
         <ol id='file-list'>
           <li v-for='file of files' :key='file.name'>
@@ -12,7 +19,11 @@
           </li>
         </ol>
       </div>
+      <div class='spacer'>
+      </div>
       <Uploader class="uploader-box" @addfile='addFile'/>
+      <div class='spacer'>
+      </div>
       <input class="uploader-butt" type=button value='Upload!' @click='uploadFiles'>
       <input type=text v-model='searchQuery'>
       <input type=submit value='Search!' @click='search'>
@@ -21,15 +32,19 @@
       <h2>Upload Success</h2>
     </div>
     <div v-if='querySuccess'>
+      <div class='spacer'>
+      </div>
       <h2>Query Result</h2>
       <ol>
         <li v-for='doc of queryResult.documents' :key='doc.name'>
           <h3><a :href='doc.link'>{{ doc.title }}</a></h3>
           <span>Jumlah Kata: {{ doc.wordCount }}</span>
-          <span>Kemiripan: {{ doc.similarity }}</span>
+          <span>Kemiripan: {{ doc.similarity }}%</span>
           <p>{{ doc.excerpt }}</p>
         </li>
       </ol>
+      <div class='spacer'>
+      </div>
       <table>
         <thead>
           <th>Term</th>
@@ -42,7 +57,7 @@
             <td>{{ term.term }}</td>
             <td v-for='doc in term.docs' :key='doc.name'>
               {{ doc.count }}
-            </td>urs, 31 minutes
+            </td>
           </tr>
         </tbody>
       </table>
@@ -51,13 +66,64 @@
 </template>
 
 <style lang="scss">
+#app {
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
 .uploader-box {
-  margin: auto;
+  margin: 0;
+  display: flex;
+  justify-content: center;
 }
 .uploader-butt {
   margin: auto;
 }
 
+h1 {
+  margin: 0;
+  font-weight: 200;
+}
+
+li {
+  h3 {
+    margin-bottom: 0.3rem;
+    a:hover {
+      color: red;
+    }
+    a:active {
+      color: chartreuse;
+    } 
+  }
+
+  p {
+    margin-top: 0.3rem;
+  }
+}
+
+li::marker {
+  margin-left: 5rem; //fix it
+}
+
+ol {
+  display: block;
+  padding: 0;
+}
+
+.spacer {
+  margin-top: 2.4rem;
+}
+
+table {
+  align-content: center; //fix it
+}
+
+th, td {
+  height: 2rem;
+  justify-content: center;
+  padding: 0 0.36rem;
+}
 </style>
 
 <script>

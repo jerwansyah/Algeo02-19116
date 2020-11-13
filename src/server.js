@@ -67,7 +67,8 @@ router.post('/search', (ctx, next) => {
         link: '/docs/'+name
       };
       curr.wordCount = vec.vals.reduce((ax, cx) => ax + cx);
-      curr.similarity = vec.cosineSimilarity(qvec);
+      //curr.similarity = vec.cosineSimilarity(qvec);
+      curr.similarity = Math.round(vec.cosineSimilarity(qvec)*10000)/100;
       docsVec.push({name: name, vec: vec});
       ret.documents.push(curr);
     });

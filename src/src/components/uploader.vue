@@ -7,7 +7,7 @@
     @click='clickDrop'
     :class='{hovered: isDragging}'>
       <span class='zone-text'>Drag files here</span>
-      <small class='zone-text'>Or click here</small>
+      <small class='zone-text'>or click here</small>
       <input type='file' hidden @change='getFile' multiple>
     </div>
   </div>
@@ -17,6 +17,7 @@
 .file-zone{
   --size: 10em;
   border: 1px solid black;
+  border-radius: 1.6rem;
   width: var(--size);
   height: var(--size);
   cursor: pointer;

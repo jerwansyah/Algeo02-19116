@@ -9,26 +9,6 @@ class Vector {
   getComponent(i){ return this.vals[i] || 0; }
   setComponent(i, val){ this.vals[i] = val; }
 
-  /* normalizing term frequency */
-  /*
-  normalize(){ 
-    this.vals.forEach((i) => {
-      let len = this.vals.length;
-      let val = 0;
-      if(this.getComponent(i) != 0)
-        val = (this.getComponent(i) / len).toFixed(10);
-      this.setComponent(i, val);
-    })
-    //console.log(this.vals.length);
-  }
-  */
-  
-  /* Inverse Document Frequency */
-  /*
-  tfidf(){
-
-  }*/
-
   /* Getter panjang vektor */
   get length(){
     const l = this.vals.reduce((ax, cx) => ax + Math.pow(cx, 2), 0);
@@ -83,7 +63,6 @@ class Database {
    * text bisa dalam bentuk string atau array of strings (kata-per-kata))
    * Mengembalikan vektor. */
   vectorizeText(text){
-    // TODO: kasus string kosong, vectornya masih -1 indeksnya
     const v = new Vector();
     if(!Array.isArray(text)) text = text.split(/\s+/);
     
@@ -101,9 +80,7 @@ class Database {
       } else {
         v.setComponent(i, v.getComponent(i)+1);
       }
-  
     } );
-    //v.normalize(); //here? tapi belom print term freq
     return v;
   }
 }

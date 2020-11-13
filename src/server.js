@@ -1,3 +1,5 @@
+const sastrawi = require('sastrawijs');
+const stopword = require('stopword');
 const fs = require('fs');
 const path = require('path');
 const Koa = require('koa');
@@ -25,12 +27,18 @@ router.get('/', (ctx, next) => {
   return ctx.render('index');
 });
 
+const stemmer = new sastrawi.Stemmer();
+const tokenizer = new sastrawi.Tokenizer();
 router.post('/search', (ctx, next) => {
   const query = ctx.request.body;
   if(query.query === '')
     ctx.body = { status: 1, message: 'Query cannot be empty' };
   else{
-    let qvec = db.vectorizeText(query.query);
+    let stemmed = [];
+    let words = tokenizer.tokenize(query.query);
+    words.forEach(word => stemmed.push(stemmer.stem(word)));
+    let stopped = stopword.removeStopwords(words, stopword.id);
+    let qvec = db.vectorizeText(stopped);
     let ret = {
       documents: [],
       terms: []
@@ -46,7 +54,11 @@ router.post('/search', (ctx, next) => {
         return;
       }
       const excerpt = s.split(/[\.\n]/)[0];
-      let vec = db.vectorizeText(s);
+      stemmed = [];
+      words = tokenizer.tokenize(s);
+      words.forEach(w => stemmed.push(stemmer.stem(w)));
+      stopped = stopword.removeStopwords(words, stopword.id);
+      let vec = db.vectorizeText(stopped);
       let curr = {
         title: name,
         similarity: 0,

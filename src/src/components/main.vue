@@ -12,8 +12,8 @@
           </li>
         </ol>
       </div>
-      <Uploader @addfile='addFile'/>
-      <input type=button value='Upload!' @click='uploadFiles'>
+      <Uploader class="uploader-box" @addfile='addFile'/>
+      <input class="uploader-butt" type=button value='Upload!' @click='uploadFiles'>
       <input type=text v-model='searchQuery'>
       <input type=submit value='Search!' @click='search'>
     </form>
@@ -42,7 +42,7 @@
             <td>{{ term.term }}</td>
             <td v-for='doc in term.docs' :key='doc.name'>
               {{ doc.count }}
-            </td>
+            </td>urs, 31 minutes
           </tr>
         </tbody>
       </table>
@@ -51,6 +51,13 @@
 </template>
 
 <style lang="scss">
+.uploader-box {
+  margin: auto;
+}
+.uploader-butt {
+  margin: auto;
+}
+
 </style>
 
 <script>

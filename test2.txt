@@ -1,0 +1,3 @@
+This is another file to test the
+vectorization feature. It only has
+3 lines. Bla bla bla.

@@ -94,23 +94,10 @@ router.post('/search', (ctx, next) => {
 });
 
 router.post('/upload', async (ctx) => {
-  let files = ctx.request.files;
-
-  // for (const i in files) {
-  //   console.log(files[i].name);
-  // }
+  let files = ctx.request.files['docs'];
 
   if(files){
-    console.log(files);
-    if(!files['docs[]']) files = [files['docs']];
-    else files = [...files['docs[]']];
-
-    // if multiple then it is [[File]]
-    // need to be changed to [File]
-    if (files[0].length > 1) {
-      files = files[0];
-    }
-    console.log(files);
+    if(!Array.isArray(files)) files = [files];
 
     files.forEach((file) => {
       fs.rename(

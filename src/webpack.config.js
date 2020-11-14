@@ -15,7 +15,8 @@ module.exports = {
   },
   entry: {
     'index': path.resolve(__dirname, 'src', 'js', 'index.js'),
-    '404': path.resolve(__dirname, 'src', 'js', '404.js')
+    '404': path.resolve(__dirname, 'src', 'js', '404.js'),
+    'aboutbonk': path.resolve(__dirname, 'src', 'js', 'aboutbonk.js')
   },
   output: {
     path: root,
@@ -65,6 +66,11 @@ module.exports = {
       template: path.resolve('src/views/404.html'),
       filename: 'views/404.html',
       chunks: ['404'],
+    }),
+    new HtmlWebpackPlugin({
+      template: path.resolve('src/views/aboutbonk.html'),
+      filename: 'views/aboutbonk.html',
+      chunks: ['aboutbonk'],
     }),
     new MiniCssExtractPlugin({
       filename: 'css/[name].css'

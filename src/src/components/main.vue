@@ -1,32 +1,39 @@
 <template>
   <div id='app'>
-    <div>
-      <h1>Welcome to</h1>
+    <div class="mb-5">
+      <div class="h1">Welcome to</div>
       <div class='bonk'>
+        <router-link
+          to="/about">
         <button class='b_bonk'>BONK</button>
+        </router-link>
       </div>
     </div>
     <form @submit.prevent>
-      <div v-if="files.length > 0">
-        <div class='spacer'>
+      <div class="upper-part row w-100 mb-5">
+        <div class="col-5 justify-content-center">
+          <Uploader class="mb-2 uploader-box" @addfile='addFile'/>
+          <input class="mt-2 butt" type=button value='Upload!' @click='uploadFiles'>
         </div>
-        <h3>File yang diupload:</h3>
-        <ol id='file-list'>
-          <li v-for='file of files' :key='file.name'>
-            {{ file.name }}
-            <input type='button' class='button delete'
-            @click='deleteFile(file.name)' value='X'>
-          </li>
-        </ol>
+        <div class="col-7">
+          <div class="h3 text-left">File Uploads</div>
+          <div v-if="files.length > 0">
+            <ol id='file-list'>
+              <li class="text-left" v-for='file of files' :key='file.name'>
+                {{ file.name }}
+                <input type='button' class='button delete btn-danger' style="outline:none"
+                @click='deleteFile(file.name)' value='X'>
+              </li>
+            </ol>
+          </div>
+        </div>
       </div>
-      <div class='spacer'>
+      <div class="">
+        <div class="search">
+          <input class="m-2 float-left" type=text v-model='searchQuery'>
+          <input class="mt-2 mb-2 butt" type=submit value='Search!' @click='search'>
+        </div>
       </div>
-      <Uploader class="uploader-box" @addfile='addFile'/>
-      <div class='spacer'>
-      </div>
-      <input class="uploader-butt" type=button value='Upload!' @click='uploadFiles'>
-      <input type=text v-model='searchQuery'>
-      <input type=submit value='Search!' @click='search'>
     </form>
     <div v-if='uploadSuccess'>
       <h2>Upload Success</h2>
@@ -72,16 +79,44 @@
   justify-content: center;
 }
 
-.uploader-box {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-}
-.uploader-butt {
-  margin: auto;
+.b_bonk:active {
+  border:none;
+  outline:none;
 }
 
-h1 {
+.uploader-box {
+  margin: 0;
+  display: block;
+  text-align: center;
+}
+
+.delete {
+  border-radius: 45%;
+  width: 25px;
+  height: 25px;
+  border: none
+}
+
+.butt {
+  border: none;
+  margin: auto;
+  display: block;
+  background-color: rgb(176, 176, 255);
+  transition: 0.5s;
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  outline:none;
+}
+.butt:hover {
+  background-color:  rgb(28, 28, 255);
+  color: white;
+}
+.search {
+  display: inline-block;
+  outline:none;
+}
+.h1 {
   margin: 0;
   font-weight: 200;
 }

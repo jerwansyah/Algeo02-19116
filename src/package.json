@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/suggoitanoshi/Algeo02-19116#readme",
   "dependencies": {
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1",
     "koa": "^2.13.0",
     "koa-better-router": "^2.1.1",
     "koa-body": "^4.2.0",
@@ -32,6 +34,7 @@
     "koa-views": "^6.3.1",
     "nunjucks": "^3.2.2",
     "package.json": "^2.0.1",
+    "popper.js": "^1.16.1",
     "sastrawijs": "^1.0.3",
     "stopword": "^1.0.3",
     "style-loader": "^2.0.0",

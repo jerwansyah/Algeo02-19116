@@ -16,10 +16,6 @@
   #aboutus {
     margin: auto;
   }
-
-  #aboutbonk {
-
-  }
 </style>
 
 <script>

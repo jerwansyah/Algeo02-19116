@@ -1,5 +1,5 @@
 <template>
-  <div class='uploader'>
+  <div class='m-auto uploader'>
     <div class='file-zone' @drop.prevent='getFile'
     @dragenter.self='dragStart'
     @dragleave.self='dragEnd'
@@ -15,6 +15,7 @@
 
 <style lang="scss">
 .file-zone{
+  margin: auto;
   --size: 10em;
   border: 1px solid black;
   border-radius: 1.6rem;

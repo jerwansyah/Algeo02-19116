@@ -5,7 +5,7 @@ const path = require('path');
 
 const scrapedFolder = 'scraped';
 // seed link
-const seedLink = 'https://news.kompas.com/search';
+const seedLink = 'https://www.kompas.com/global';
 let docCount = 0;
 try{
   fs.mkdirSync(path.resolve(__dirname, scrapedFolder));
@@ -19,7 +19,7 @@ catch(e){}
     const response = await got(e.attribs.href);
     const $ = cheerio.load(response.body);
     docCount++;
-    const title = $('h1.read__title').text().replace(/[^a-zA-Z0-9]/g, '_');
+    const title = $('h1.read__title').text().replace(/[^a-zA-Z0-9]/g, '_')+'.txt';
     const author = $('#penulis a').text();
     const editor = $('#editor a').text();
     const body = $('.read__content p')
@@ -29,12 +29,11 @@ catch(e){}
       .text()
       .replace(/[ \t\r]+/g, ' ').trim();
 
-    let finalText = '';
+    let finalText = body + '\n\n';
     if(author !== '')
       finalText += 'author: ' + author;
     if(editor !== '')
-      finalText += (finalText === '' ? '' : ', ') + 'editor: ' + editor;
-    finalText += '\n\n' + body.substr(2, body.length);
+      finalText += (author === '' ? '' : ', ') + 'editor: ' + editor;
     fs.writeFile(
       path.resolve(__dirname , scrapedFolder, title),
       finalText,

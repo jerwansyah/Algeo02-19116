@@ -34,6 +34,7 @@ const stemmer = new sastrawi.Stemmer();
 const tokenizer = new sastrawi.Tokenizer();
 router.post('/search', (ctx, next) => {
   const query = ctx.request.body;
+  const excerptLength = 100;
   if(query.query === '')
     ctx.body = { status: 1, message: 'Query cannot be empty' };
   else{
@@ -56,7 +57,7 @@ router.post('/search', (ctx, next) => {
         console.log(e);
         return;
       }
-      const excerpt = s.split(/[\.\n]/)[0];
+      const excerpt = s.substr(0,excerptLength) + (s.length > excerptLength ? '...' : '');
       stemmed = [];
       words = tokenizer.tokenize(s);
       words.forEach(w => stemmed.push(stemmer.stem(w)));
@@ -128,7 +129,8 @@ app.use(async(ctx, next) => {
   }
 })
 
-if(!fs.existsSync(docsPath)) fs.mkdirSync(docsPath, { recursive: true });
+try{ fs.mkdirSync(docsPath, { recursive: true }) }
+catch(e){ console.log(e); }
 
 app
   .use(render)

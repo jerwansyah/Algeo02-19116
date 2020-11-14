@@ -9,8 +9,10 @@
     <form @submit.prevent class="content">
       <div class="upper-part w-100 d-flex justify-content-center mb-5">
         <div class="col-3 py-3 mr-3 uploader-box">
-          <Uploader class="mb-2" @addfile='addFile'/>
-          <input class="mt-2 butt" type=button value='Upload!' @click='uploadFiles'>
+          <div>
+            <Uploader class="mb-2" @addfile='addFile'/>
+            <input class="mt-2 butt" type=button value='Upload!' @click='uploadFiles'>
+          </div>
         </div>
         <div class="col-7 file-upload-box py-3">
           <div class="file-upload-title mb-1">File Uploads</div>
@@ -23,10 +25,16 @@
           </ol>
         </div>
       </div>
-      <div class="">
+      <div>
         <div class="search">
-          <input class="m-2 float-left query-box" type=text v-model='searchQuery' placeholder="Type something here...">
-          <input class="mt-2 mb-2 butt" type=submit value='Search!' @click='search'>
+          <div class="row align-items-center">
+            <div class="col">
+              <input class="mr-2 float-left query-box" type=text v-model='searchQuery' placeholder="Type something here...">
+            </div>
+            <div class="col">
+              <input class="butt" type=submit value='Search!' @click='search'>
+            </div>
+          </div>
         </div>
       </div>
     </form>
@@ -87,7 +95,7 @@
   margin: 1em auto;
   padding: 0.5em;
   border: 0.1em solid pink;
-  font-size: 1.5em;
+  font-size: 1em;
   th{
     background: lightpink;
   }

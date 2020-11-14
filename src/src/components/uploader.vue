@@ -17,7 +17,7 @@
 .file-zone{
   margin: auto;
   --size: 10em;
-  border-radius: 1.6rem;
+  border-radius: 20px;
   width: var(--size);
   height: var(--size);
   cursor: pointer;

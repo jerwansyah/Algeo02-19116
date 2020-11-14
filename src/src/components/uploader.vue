@@ -17,7 +17,6 @@
 .file-zone{
   margin: auto;
   --size: 10em;
-  border: 1px solid black;
   border-radius: 1.6rem;
   width: var(--size);
   height: var(--size);
@@ -26,6 +25,13 @@
   justify-content: center;
   align-items: center;
   flex-flow: column;
+  background-color: #f9c4d2;
+  transition: 0.5s;
+}
+
+.file-zone:hover {
+  background-color: #b18597;
+  color:white;
 }
 
 .zone-text{

@@ -35,6 +35,119 @@ $pink-shadow: #ffe3e2;
   margin: 0.5rem;
   min-height: 80px;
   background: $bg;
+  outline: none;
+}
+.bonk:active, bonk:focus {
+  outline: none;
+}
+
+.file-upload-title {
+  height: fit-content;
+  display: flex;
+  font-size: 1.8rem;
+}
+
+.fa-trash-o {
+  color: white;
+}
+
+#file-list {
+  display: block;
+}
+
+.file-upload-box {
+  display: block;
+  background-color: $pink;
+  border-radius: 20px;
+}
+
+.uploader-box {
+  margin: 0;
+  min-width: 11em;
+  max-width: 15em;
+  display: block;
+  text-align: center;
+  background-color: $pink;
+  border-radius: 20px;
+}
+
+.query-box {
+  background-color: white;
+  min-width: 20em;
+  border: 2px solid $pink-border;
+  border-radius: 15px;
+  outline: none;
+}
+
+.delete {
+  border-radius: 20%;
+  width: 30px;
+  height: 23px;
+  border: none;
+  font-size: 1rem
+}
+
+.butt {
+  border: none;
+  margin: auto;
+  display: block;
+  background-color: rgb(176, 176, 255);
+  transition: 0.5s;
+  width: 100px;
+  height: 30px;
+  border-radius: 20px;
+  outline:none;
+}
+.butt:hover {
+  background-color:  rgb(28, 28, 255);
+  color: white;
+}
+.search {
+  display: inline-block;
+  outline:none;
+}
+.h1 {
+  margin: 0;
+  font-weight: 200;
+}
+
+li {
+  h3 {
+    margin-bottom: 0.3rem;
+    a:hover {
+      color: red;
+    }
+    a:active {
+      color: chartreuse;
+    } 
+  }
+
+  p {
+    margin-top: 0.3rem;
+  }
+}
+
+li::marker {
+  margin-left: 5rem; //fix it
+}
+
+ol {
+  display: block;
+  padding: 0;
+}
+
+.spacer {
+  margin-top: 2.4rem;
+}
+
+table {
+  align-content: center; //fix it
+}
+
+th, td {
+  height: 2rem;
+  justify-content: center;
+  padding: 0 0.36rem;
 }
 
 button {

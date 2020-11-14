@@ -61,9 +61,10 @@ $pink-shadow: #ffe3e2;
 
 .uploader-box {
   margin: 0;
-  min-width: 11em;
+  padding: 0;
+  min-width: 16rem;
   max-width: 15em;
-  min-height: 15rem;
+  min-height: 26rem;
   display: block;
   text-align: center;
   background-color: $pink;
@@ -106,6 +107,11 @@ $pink-shadow: #ffe3e2;
 .search {
   display: inline-block;
   outline:none;
+
+  .col {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
 
 .h1 {
@@ -116,11 +122,18 @@ $pink-shadow: #ffe3e2;
 li {
   h3 {
     margin-bottom: 0.3rem;
-    a:hover {
-      color: red;
+    a:link, a:visited {
+      color: #b0b0ff;
+      transition: 0.5s;
     }
+
+    a:hover {
+      color: #1c1cff;
+    }
+
     a:active {
-      color: chartreuse;
+      transition: 0s;
+      color: #ffb6c1;
     } 
   }
 
@@ -137,10 +150,6 @@ li {
   transform: translateY(-50%);
 }
 
-li::marker {
-  margin-left: 5rem; //fix it
-}
-
 ol {
   display: block;
   padding: 0;
@@ -148,10 +157,6 @@ ol {
 
 .spacer {
   margin-top: 2.4rem;
-}
-
-table {
-  align-content: center; //fix it
 }
 
 th, td {

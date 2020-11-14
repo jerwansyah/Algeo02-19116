@@ -16,6 +16,7 @@
 <style lang="scss">
 .file-zone{
   margin: auto;
+  margin-top: 12rem;
   --size: 10em;
   border-radius: 20px;
   width: var(--size);

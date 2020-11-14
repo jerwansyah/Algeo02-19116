@@ -10,17 +10,18 @@
       <div class="upper-part w-100 d-flex justify-content-center mb-5">
         <div class="col-3 py-3 mr-3 uploader-box">
           <div>
+            <img class="rabbit" src="/assets/white-rabbit.png" alt="bunny">
             <Uploader class="mb-2" @addfile='addFile'/>
             <input class="mt-2 butt" type=button value='Upload!' @click='uploadFiles'>
           </div>
         </div>
         <div class="col-7 file-upload-box py-3">
-          <div class="file-upload-title mb-1">File Uploads</div>
+          <div class="file-upload-title ml-2 mb-1">File Uploads</div>
           <ol id='file-list' v-if="files.length > 0">
             <li class="text-left ml-3 m-1" v-for='file of files' :key='file.name'>
               {{ file.name }}
               <button type='button' class='button delete btn-danger' style="outline:none"
-              @click='deleteFile(file.name)'><i class="mb-2 fa fa-trash-o fa-xs" aria-hidden="true"></i></button>
+              @click='deleteFile(file.name)'><i class="fa fa-trash-o fa-xs" aria-hidden="true"></i></button>
             </li>
           </ol>
         </div>
@@ -72,10 +73,20 @@
         </tbody>
       </table>
     </div>
+    <div class='spacer'>
+    </div>
   </div>
 </template>
 
 <style lang="scss">
+.rabbit {
+    width: 14rem;
+    position: absolute;
+    z-index: 2;
+    left: 1rem;
+    bottom: 180px;
+}
+
 #app {
   display: flex;
   flex-flow: column;

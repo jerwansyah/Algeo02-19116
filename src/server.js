@@ -141,6 +141,7 @@ app
   .use(mount('/css', serve(path.resolve(root, 'css'))))
   .use(mount('/js', serve(path.resolve(root, 'js'))))
   .use(mount('/docs', serve(docsPath)))
+  .use(mount('/assets', serve(path.resolve(root, 'assets'))))
   .use(router.middleware())
   .listen(port, () => {
     console.log(`Server started at http://localhost:${port}`)

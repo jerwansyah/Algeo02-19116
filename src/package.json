@@ -8,6 +8,7 @@
     "start": "node server.js",
     "compile": "webpack",
     "compile:watch": "webpack --watch",
+    "scrape": "node scrape.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -26,6 +27,8 @@
   "homepage": "https://github.com/suggoitanoshi/Algeo02-19116#readme",
   "dependencies": {
     "bootstrap": "^4.5.3",
+    "cheerio": "^1.0.0-rc.3",
+    "got": "^11.8.0",
     "jquery": "^3.5.1",
     "koa": "^2.13.0",
     "koa-better-router": "^2.1.1",

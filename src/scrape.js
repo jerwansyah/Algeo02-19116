@@ -23,9 +23,6 @@ catch(e){}
     const author = $('#penulis a').text();
     const editor = $('#editor a').text();
     const body = $('.read__content p')
-      .children()
-      .remove()
-      .end()
       .text()
       .replace(/[ \t\r]+/g, ' ').trim();
 

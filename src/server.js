@@ -41,7 +41,7 @@ router.post('/search', (ctx, next) => {
     let stemmed = [];
     let words = tokenizer.tokenize(query.query);
     words.forEach(word => stemmed.push(stemmer.stem(word)));
-    let stopped = stopword.removeStopwords(words, stopword.id);
+    let stopped = stopword.removeStopwords(stemmed, stopword.id);
     let qvec = db.vectorizeText(stopped);
     let ret = {
       documents: [],

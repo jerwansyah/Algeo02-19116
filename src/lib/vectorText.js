@@ -25,7 +25,7 @@ class Vector {
   }
 
   cosineSimilarity(v2){
-    return this.dot(v2) / (this.length * v2.length);
+    return this.dot(v2) / (this.length * v2.length) || 0;
   }
 }
 

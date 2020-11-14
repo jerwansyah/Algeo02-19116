@@ -3,10 +3,7 @@
     <div class="my-5">
       <div class="h1">Welcome to</div>
       <div class='bonk'>
-        <router-link
-          to="/about">
-        <button class='b_bonk'>BONK</button>
-        </router-link>
+        <a href='/about' class='bonk_about b_bonk'>BONK</a>
       </div>
     </div>
     <form @submit.prevent class="content">
@@ -43,14 +40,14 @@
       <ol>
         <li v-for='doc of queryResult.documents' :key='doc.name'>
           <h3><a :href='doc.link'>{{ doc.title }}</a></h3>
-          <span>Jumlah Kata: {{ doc.wordCount }}</span>
-          <span>Kemiripan: {{ doc.similarity }}%</span>
-          <p>{{ doc.excerpt }}</p>
+          <span class='wordcount'>Jumlah Kata: {{ doc.wordCount }}</span>
+          <span class='similarity'>Kemiripan: {{ doc.similarity }}%</span>
+          <p class='excerpt'>{{ doc.excerpt }}...</p>
         </li>
       </ol>
       <div class='spacer'>
       </div>
-      <table>
+      <table v-if='queryResult.terms[0]' class='term-display'>
         <thead>
           <th>Term</th>
           <th v-for='doc in queryResult.terms[0].docs' :key='doc.name'>
@@ -82,6 +79,23 @@
   outline:none;
 }
 
+.query-box{
+  padding: 0.3em 0.6em;
+}
+
+.term-display{
+  margin: 1em auto;
+  padding: 0.5em;
+  border: 0.1em solid pink;
+  font-size: 1.5em;
+  th{
+    background: lightpink;
+  }
+  th, td{
+    border: 0.1em solid pink;
+    padding: 0.5rem 0.7rem;
+  }
+}
 
 </style>
 

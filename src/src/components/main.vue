@@ -42,6 +42,7 @@
     <div v-if='uploadSuccess'>
       <h2>Upload Success</h2>
     </div>
+    <ErrorBox :message='errMsg' v-if='failure' />
     <div v-if='querySuccess'>
       <div class='spacer'>
       </div>
@@ -120,6 +121,7 @@
 
 <script>
 import Uploader from './uploader.vue';
+import ErrorBox from './error.vue';
 export default {
   data() {
     return {
@@ -128,6 +130,8 @@ export default {
       result: {},
       uploadSuccess: false,
       querySuccess: false,
+      failure: false,
+      errMsg: '',
       queryResult: {},
     }
   },
@@ -144,10 +148,19 @@ export default {
       })
       .then(res => res.json())
       .then(res => {
-        if(res.status == 0) this.success = true;
+        if(res.status == 0){
+          this.success = true;
+          this.failure = false;
+        }
+        else{
+          this.success = false;
+          this.failure = true;
+          this.errMsg = res.message;
+        }
       })
       .catch(err => {
-        console.log(err);
+        this.failure = true;
+        this.errMsg = 'Unknown error happened.';
       })
     },
     search(e){
@@ -164,8 +177,16 @@ export default {
       })
       .then(res => res.json())
       .then(res => {
-        if(res.status == 0) this.querySuccess = true;
-        this.queryResult = res.data;
+        if(res.status == 0){
+          this.querySuccess = true;
+          this.failure = false;
+          this.queryResult = res.data;
+        }
+        else{
+          this.querySuccess = false;
+          this.failure = true;
+          this.errMsg = res.message;
+        }
       });
     },
     addFile(files){
@@ -178,7 +199,8 @@ export default {
     }
   },
   components: {
-    Uploader
+    Uploader,
+    ErrorBox
   }
 }
 </script>

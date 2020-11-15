@@ -1,5 +1,4 @@
 const natural = require('natural');
-const stopword = require('stopword');
 const cheerio = require('cheerio');
 
 const stemAndStop = (text, opt) => {
@@ -12,10 +11,7 @@ const stemAndStop = (text, opt) => {
   let stemmed = [];
   if(lang == 'id') stemmed = natural.StemmerId.tokenizeAndStem(text);
   else if(lang == 'en') stemmed = natural.PorterStemmer.tokenizeAndStem(text);
-  return stopword.removeStopwords(
-    stemmed,
-    stopword[lang]
-  );
+  return stemmed;
 }
 
 const getExcerpt = (text, opt) => {

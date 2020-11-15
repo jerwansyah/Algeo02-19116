@@ -28,9 +28,9 @@
       <div class='mb-5'>
         <h3>How to Use</h3>
         <h5>Backend</h5>
-        <p> 1. Install semua dependencies dengan  <CODE>npm install package.json</CODE><br>
+        <p> 1. Install semua dependencies dengan  <CODE>npm install</CODE>.<br>
             2. Jalakan dengan menggunakan  <CODE>npm run dev</CODE>.<br>
-            3. Buka localhost port 6969 di browser<br>
+            3. Buka localhost port 6969 di browser.<br>
             4. bONK!<br></p>
         <h5>Frontend</h5>
         <p> 1. Upload files, klik tombol Upload!<br>

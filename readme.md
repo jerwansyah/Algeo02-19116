@@ -32,6 +32,9 @@
 4. Profit
 
 ## Tampilan
+### Tampilan halaman utama
 ![Main Page](doc/main_page.png)
+
+### Tampilan halaman tentang
 ![About Page](doc/aboutbonk_page.png)
 * Halaman About dapat diakses melalui tombol "BONK".

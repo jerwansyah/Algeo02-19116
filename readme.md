@@ -4,6 +4,7 @@
 * [Anggota](#anggota)
 * [Teknologi](#teknologi-yang-digunakan)
 * [Cara Menjalankan](#cara-menjalankan)
+* [Tampilan](#tampilan)
 
 ## Anggota
 | Nama | NIM |
@@ -29,3 +30,8 @@
 2. Jalankan dengan menggunakan `npm run scrape`
 3. ???
 4. Profit
+
+## Tampilan
+![Main Page](https://github.com/suggoitanoshi/Algeo02-19116/docs/main_page.png?raw=true)
+![About Page](https://github.com/suggoitanoshi/Algeo02-19116/docs/aboutbonk_page.png?raw=true)
+* Halaman About dapat diakses melalui tombol "BONK".

@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Rubik:700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap');
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   text-align: center;
-  //background-color: #e2ebf0;
   font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -219,4 +222,58 @@ th, td {
       }
     }
   }
+}
+
+#aboutbonk {
+  display: flex;
+  flex-flow: column;
+}
+
+.paragraf {
+    text-align: justify;
+}
+
+.container1 {
+  text-align: left;
+}
+
+.h-scroll { 
+  margin: 4px;
+  padding: 4px; 
+  overflow-y: hidden; 
+}
+
+@media screen and (min-width: 500px) {
+  .container1 {
+    margin: 0 5%;
+  }
+  .h-scroll {
+    width: 400px;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  .container1 {
+    margin: 0 12%;
+  }
+  .h-scroll {
+    width: 600px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .container1 {
+    margin: 0 25%;
+  }
+  .h-scroll {
+    width: 1000px;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap');
+
+CODE {
+  color: rgb(255, 0, 162);
+  font-family: 'IBM Plex Mono', monospace;
+  background-color: rgb(250, 250, 250);
 }

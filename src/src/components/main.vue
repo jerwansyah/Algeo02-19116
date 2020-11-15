@@ -19,7 +19,7 @@
           <div class="file-upload-title ml-2 mb-1">File Uploads</div>
           <ol id='file-list' v-if="files.length > 0">
             <li class="text-left ml-3 m-1" v-for='file of files' :key='file.name'>
-              {{ file.name }}
+              <div class="text-truncate">{{ file.name }}</div>
               <button type='button' class='button delete btn-danger' style="outline:none"
               @click='deleteFile(file.name)'><i class="fa fa-trash-o fa-xs" aria-hidden="true"></i></button>
             </li>
@@ -49,7 +49,7 @@
       <h2>Query Result</h2>
       <ol>
         <li v-for='doc of queryResult.documents' :key='doc.name'>
-          <h3><a :href='doc.link'>{{ doc.title }}</a></h3>
+          <h3><div class="text-truncate"><a :href='doc.link'>{{ doc.title }}</a></div></h3>
           <span class='wordcount'>Jumlah Kata: {{ doc.wordCount }}</span>
           <span class='similarity'>Kemiripan: {{ doc.similarity }}%</span>
           <p class='excerpt'>{{ doc.excerpt }}...</p>
@@ -57,22 +57,24 @@
       </ol>
       <div class='spacer'>
       </div>
-      <table v-if='queryResult.terms[0]' class='term-display'>
-        <thead>
-          <th>Term</th>
-          <th v-for='doc in queryResult.terms[0].docs' :key='doc.name'>
-            {{ doc.name }}
-          </th>
-        </thead>
-        <tbody>
-          <tr v-for='term in queryResult.terms' :key='term.term'>
-            <td>{{ term.term }}</td>
-            <td v-for='doc in term.docs' :key='doc.name'>
-              {{ doc.count }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="mx-auto h-scroll">
+        <table v-if='queryResult.terms[0]' class='term-display mx-auto'>
+          <thead>
+            <th>Term</th>
+            <th v-for='doc in queryResult.terms[0].docs' :key='doc.name'>
+              <div class="text-truncate">{{ doc.name }}</div>
+            </th>
+          </thead>
+          <tbody>
+            <tr v-for='term in queryResult.terms' :key='term.term'>
+              <td>{{ term.term }}</td>
+              <td v-for='doc in term.docs' :key='doc.name'>
+                {{ doc.count }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
     <div class='spacer'>
     </div>
@@ -85,7 +87,7 @@
     position: absolute;
     z-index: 2;
     left: 1rem;
-    bottom: 180px;
+    top: 18px;
 }
 
 #app {
@@ -104,7 +106,6 @@
 }
 
 .term-display{
-  margin: 1em auto;
   padding: 0.5em;
   border: 0.1em solid pink;
   font-size: 1em;
@@ -114,6 +115,7 @@
   th, td{
     border: 0.1em solid pink;
     padding: 0.5rem 0.7rem;
+    max-width: 18rem;
   }
 }
 

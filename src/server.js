@@ -116,7 +116,7 @@ router.post('/upload', async (ctx) => {
     ctx.body = { status: 0, message: 'Success' };
   }
   else{
-    ctx.body = { status: 1, message: 'Mulai...' };
+    ctx.body = { status: 1, message: 'Select file(s) to be uploaded first' };
   }
 });
 

@@ -1,5 +1,5 @@
 <template>
-<div class='error messagebox'>
+<div class='mt-5 error messagebox'>
   <h4>Error!</h4>
   <p>{{ message }}</p>
 </div>

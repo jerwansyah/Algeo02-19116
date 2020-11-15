@@ -35,9 +35,9 @@
     "koa-body": "^4.2.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.3.1",
+    "natural": "^2.1.5",
     "package.json": "^2.0.1",
     "popper.js": "^1.16.1",
-    "sastrawijs": "^1.0.3",
     "stopword": "^1.0.3",
     "style-loader": "^2.0.0",
     "vue": "^2.6.12"

@@ -1,5 +1,3 @@
-const sastrawi = require('sastrawijs');
-const stopword = require('stopword');
 const fs = require('fs');
 const path = require('path');
 const Koa = require('koa');
@@ -9,11 +7,15 @@ const mount = require('koa-mount');
 const serve = require('koa-static');
 const body = require('koa-body');
 
+const lang = 'id';
+
 const port = 6969;
 const root = path.resolve(__dirname, 'dist');
 const docsPath = path.resolve(__dirname, 'upload', 'docs');
 
 const { CurrentDatabase: db, Vector } = require('./lib/vectorText');
+
+const { stemAndStop, getExcerpt, getWordCount } = require('./lib/processText');
 
 var vectorDB = new Vector();
 
@@ -30,19 +32,14 @@ router.get('/about', (ctx, next) => {
   return ctx.render('aboutbonk');
 });
 
-const stemmer = new sastrawi.Stemmer();
-const tokenizer = new sastrawi.Tokenizer();
 router.post('/search', (ctx, next) => {
   const query = ctx.request.body;
   const excerptLength = 100;
   if(query.query === '')
     ctx.body = { status: 1, message: 'Query cannot be empty' };
   else{
-    let stemmed = [];
-    let words = tokenizer.tokenize(query.query);
-    words.forEach(word => stemmed.push(stemmer.stem(word)));
-    let stopped = stopword.removeStopwords(stemmed, stopword.id);
-    let qvec = db.vectorizeText(stopped);
+    const s = stemAndStop(query.query, { lang: lang });
+    let qvec = db.vectorizeText(s);
     let ret = {
       documents: [],
       terms: []
@@ -54,23 +51,27 @@ router.post('/search', (ctx, next) => {
         s = fs.readFileSync(path.resolve(docsPath, name)).toString();
       }
       catch(e){
-        console.log(e);
+        ctx.body = { status: 1, message: 'Please upload file first.' };
         return;
       }
-      const excerpt = s.substr(0,excerptLength) + (s.length > excerptLength ? '...' : '');
-      stemmed = [];
-      words = tokenizer.tokenize(s);
-      words.forEach(w => stemmed.push(stemmer.stem(w)));
-      stopped = stopword.removeStopwords(words, stopword.id);
-      let vec = db.vectorizeText(stopped);
+      const type = path.extname(name);
+      const excerpt = getExcerpt(s, {
+        lang: lang,
+        type: type
+      });
+      let vec = db.vectorizeText(
+        stemAndStop(s, {
+          lang: lang,
+          type: type
+        })
+      );
       let curr = {
         title: name,
         similarity: 0,
-        wordCount:0,
+        wordCount: getWordCount(s),
         excerpt: excerpt,
         link: '/docs/'+name
       };
-      curr.wordCount = vec.vals.reduce((ax, cx) => ax + cx);
       curr.similarity = Math.round(vec.cosineSimilarity(qvec)*10000)/100;
       docsVec.push({name: name, vec: vec});
       ret.documents.push(curr);
@@ -91,9 +92,11 @@ router.post('/search', (ctx, next) => {
       });
       ret.terms.push(curr);
     });
-    ret.documents.sort((a, b) => b.similarity - a.similarity);
-    ctx.response.type = 'json';
-    ctx.body = { status: 0, message: 'Success', data: ret };
+    if(!ctx.body){
+      ret.documents.sort((a, b) => b.similarity - a.similarity);
+      ctx.response.type = 'json';
+      ctx.body = { status: 0, message: 'Success', data: ret };
+    }
   }
 });
 

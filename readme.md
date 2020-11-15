@@ -32,6 +32,6 @@
 4. Profit
 
 ## Tampilan
-![Main Page](https://github.com/suggoitanoshi/Algeo02-19116/docs/main_page.png?raw=true)
-![About Page](https://github.com/suggoitanoshi/Algeo02-19116/docs/aboutbonk_page.png?raw=true)
+![Main Page](https://github.com/suggoitanoshi/Algeo02-19116/doc/main_page.png?raw=true)
+![About Page](https://github.com/suggoitanoshi/Algeo02-19116/doc/aboutbonk_page.png?raw=true)
 * Halaman About dapat diakses melalui tombol "BONK".
